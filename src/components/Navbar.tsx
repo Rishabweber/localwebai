@@ -47,12 +47,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           id="brand-logo-btn"
           onClick={handleHomeClick}
           className="flex cursor-pointer items-center text-left transition-opacity hover:opacity-90 focus:outline-none"
-          aria-label="LocalWeb AI Studio Home"
+          aria-label="LocalWeb AI Home"
         >
           <img
             id="site-official-logo"
             src="/logo-horizontal.svg"
-            alt="LocalWeb AI Studio"
+            alt="LocalWeb AI"
             className="h-9 sm:h-10 w-auto max-w-[220px] sm:max-w-[270px] object-contain shrink-0"
             referrerPolicy="no-referrer"
             loading="eager"
