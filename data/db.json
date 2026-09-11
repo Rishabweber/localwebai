@@ -1,0 +1,336 @@
+{
+  "users": {
+    "user_demo_123": {
+      "id": "user_demo_123",
+      "email": "demo@localai.web",
+      "name": "Shubham Sharma",
+      "businessName": "Bella Luxe Salon",
+      "token": "demo_token_localai_2026",
+      "passwordHash": "ba47fe6570fb17a8eb6c47bc6f3167d24d441a7e34a45ac34043bd7e79bee036",
+      "role": "user",
+      "plan": "starter",
+      "planStatus": "active",
+      "aiGenerationsUsed": 0,
+      "aiGenerationsLimit": 3,
+      "multiOutletRequestId": "mor_43c3a185410d1387"
+    },
+    "user_admin_super": {
+      "id": "user_admin_super",
+      "email": "admin@localweb.ai",
+      "name": "LocalWeb Administrator",
+      "businessName": "LocalWeb AI HQ",
+      "token": "admin_token_localai_2026",
+      "passwordHash": "ba47fe6570fb17a8eb6c47bc6f3167d24d441a7e34a45ac34043bd7e79bee036",
+      "role": "admin",
+      "plan": "multi",
+      "planStatus": "active",
+      "aiGenerationsUsed": 0,
+      "aiGenerationsLimit": 999999
+    }
+  },
+  "projects": {
+    "proj_bella_salon": {
+      "id": "proj_bella_salon",
+      "userId": "user_demo_123",
+      "slug": "bella-luxe-salon-mumbai",
+      "businessInfo": {
+        "businessName": "Bella Luxe Salon & Spa",
+        "category": "salon",
+        "city": "Bandra West, Mumbai",
+        "address": "Plot 42, Hill Road, Bandra West, Mumbai, MH 400050",
+        "shortDescription": "Award-winning hair styling, organic skincare, bridal makeup and revitalizing spa therapies in Mumbai.",
+        "phoneNumber": "+91 98200 12345",
+        "whatsappNumber": "+91 98200 12345",
+        "businessEmail": "appointments@bellaluxemumbai.com",
+        "stylePreference": "elegant-luxury",
+        "currencySymbol": "₹",
+        "openingHours": {
+          "general": "Tue - Sun: 10:00 AM - 9:00 PM",
+          "schedule": [
+            {
+              "day": "Monday",
+              "hours": "Closed (Sanitization Day)",
+              "isOpen": false
+            },
+            {
+              "day": "Tuesday - Friday",
+              "hours": "10:00 AM - 9:00 PM",
+              "isOpen": true
+            },
+            {
+              "day": "Saturday - Sunday",
+              "hours": "9:30 AM - 9:30 PM",
+              "isOpen": true
+            }
+          ]
+        },
+        "services": [
+          {
+            "id": "s1",
+            "name": "Signature Haircut & Blowdry",
+            "description": "Face-framing bespoke cut with Moroccan scalp massage and salon finish blowdry.",
+            "price": "₹950",
+            "duration": "45 mins",
+            "popular": true,
+            "category": "salon"
+          },
+          {
+            "id": "s2",
+            "name": "24K Gold Radiance Facial",
+            "description": "Deep exfoliation, gold serum infusion, and lymphatic drainage for an instant red-carpet glow.",
+            "price": "₹2,400",
+            "duration": "60 mins",
+            "popular": true,
+            "category": "salon"
+          },
+          {
+            "id": "s3",
+            "name": "Brazilian Keratin Smoothing",
+            "description": "Formaldehyde-free intensive smoothing treatment eliminating frizz for up to 5 months.",
+            "price": "₹4,999",
+            "duration": "120 mins",
+            "popular": false,
+            "category": "salon"
+          },
+          {
+            "id": "s4",
+            "name": "Bridal & Reception Glam",
+            "description": "HD makeup with airbrush finish, pre-bridal consultation, false lashes, and customized styling.",
+            "price": "₹12,500",
+            "duration": "180 mins",
+            "popular": true,
+            "category": "salon"
+          }
+        ]
+      },
+      "website": {
+        "hero": {
+          "badge": "★ Awarded Top Salon & Spa in Mumbai 2025",
+          "headline": "Where Glamour Meets Relaxation in Bandra",
+          "subheadline": "Step into Bella Luxe Salon & Spa. Expert stylists, bespoke hair & skin treatments, and luxury care designed just for you.",
+          "primaryCta": "Book on WhatsApp",
+          "secondaryCta": "View Treatments & Pricing",
+          "coverImage": "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1400&q=80"
+        },
+        "about": {
+          "title": "Our Craft & Philosophy",
+          "subtitle": "Over 8 Years of Styling Mumbai’s Best",
+          "story": "Bella Luxe Salon & Spa was founded in the vibrant streets of Bandra with a vision to combine modern European hairdressing artistry with holistic wellness rituals.\n\nEvery member of our styling crew is internationally trained and dedicated to giving you an experience that leaves you feeling renewed, radiant, and empowered.",
+          "highlights": [
+            {
+              "title": "Cruelty-Free Products",
+              "desc": "We only use authentic, imported salon-grade formulas safe for all skin types"
+            },
+            {
+              "title": "Private VIP Suites",
+              "desc": "Quiet, hygienic treatment chambers for facials, waxing, and bridal prep"
+            },
+            {
+              "title": "Rapid WhatsApp Booking",
+              "desc": "Instant confirmations and zero wait-time on appointments"
+            }
+          ],
+          "yearsInBusiness": "8+ Years",
+          "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+        },
+        "services": [
+          {
+            "id": "s1",
+            "name": "Signature Haircut & Blowdry",
+            "description": "Face-framing bespoke cut with Moroccan scalp massage and salon finish blowdry.",
+            "price": "₹950",
+            "duration": "45 mins",
+            "popular": true,
+            "category": "salon"
+          },
+          {
+            "id": "s2",
+            "name": "24K Gold Radiance Facial",
+            "description": "Deep exfoliation, gold serum infusion, and lymphatic drainage for an instant red-carpet glow.",
+            "price": "₹2,400",
+            "duration": "60 mins",
+            "popular": true,
+            "category": "salon"
+          },
+          {
+            "id": "s3",
+            "name": "Brazilian Keratin Smoothing",
+            "description": "Formaldehyde-free intensive smoothing treatment eliminating frizz for up to 5 months.",
+            "price": "₹4,999",
+            "duration": "120 mins",
+            "popular": false,
+            "category": "salon"
+          },
+          {
+            "id": "s4",
+            "name": "Bridal & Reception Glam",
+            "description": "HD makeup with airbrush finish, pre-bridal consultation, false lashes, and customized styling.",
+            "price": "₹12,500",
+            "duration": "180 mins",
+            "popular": true,
+            "category": "salon"
+          }
+        ],
+        "schedule": [
+          {
+            "day": "Monday",
+            "hours": "Closed (Sanitization Day)",
+            "isOpen": false
+          },
+          {
+            "day": "Tuesday - Friday",
+            "hours": "10:00 AM - 9:00 PM",
+            "isOpen": true
+          },
+          {
+            "day": "Saturday - Sunday",
+            "hours": "9:30 AM - 9:30 PM",
+            "isOpen": true
+          }
+        ],
+        "contact": {
+          "phone": "+91 98200 12345",
+          "whatsapp": "+91 98200 12345",
+          "whatsappMessagePreset": "Hi%20Bella%20Luxe%2C%20I%20would%20like%20to%20book%20an%20appointment!",
+          "email": "appointments@bellaluxemumbai.com",
+          "address": "Plot 42, Hill Road, Bandra West, Mumbai, MH 400050",
+          "city": "Bandra West, Mumbai",
+          "googleMapsQuery": "Hill%20Road%20Bandra%20West%20Mumbai%20Bella%20Luxe"
+        },
+        "testimonials": [
+          {
+            "id": "t1",
+            "name": "Ananya Deshmukh",
+            "role": "Fashion Blogger, Bandra",
+            "rating": 5,
+            "comment": "Bella Luxe is my absolute holy grail salon! My hair color turned out exactly like Pinterest, and booking over WhatsApp was lightning fast.",
+            "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya"
+          },
+          {
+            "id": "t2",
+            "name": "Vikram Mehta",
+            "role": "Resident, Mumbai",
+            "rating": 5,
+            "comment": "Great haircut, clean tools, and very polite stylists. The head massage alone is worth coming back for every fortnight.",
+            "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Vikram"
+          },
+          {
+            "id": "t3",
+            "name": "Zara Merchant",
+            "role": "Verified Customer",
+            "rating": 5,
+            "comment": "Did my pre-wedding bridal facial package here. My skin was glowing on my big day! Thank you team Bella Luxe!",
+            "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Zara"
+          }
+        ],
+        "faq": [
+          {
+            "id": "f1",
+            "question": "Do you accept walk-in clients or is prior booking required?",
+            "answer": "While we welcome walk-ins whenever a chair is available, we strongly recommend reserving your slot via WhatsApp to guarantee zero waiting time."
+          },
+          {
+            "id": "f2",
+            "question": "What hair color brands do you work with?",
+            "answer": "We exclusively stock premium salon brands like L’Oréal Professionnel Série Expert, Wella Professionals, and Olaplex bond repair."
+          },
+          {
+            "id": "f3",
+            "question": "Is valet or street parking available?",
+            "answer": "Yes, convenient street parking and nearby mall parking lots are easily accessible along Hill Road Bandra."
+          }
+        ],
+        "seo": {
+          "metaTitle": "Bella Luxe Salon & Spa | Best Hair Salon in Bandra West, Mumbai",
+          "metaDescription": "Book your hair, skin, and spa treatments at Bella Luxe Salon in Bandra West Mumbai. Expert hair stylists, luxury facials, and instant WhatsApp booking.",
+          "keywords": [
+            "salon in bandra",
+            "haircut bandra west",
+            "best spa mumbai",
+            "bridal makeup mumbai",
+            "bella luxe salon"
+          ]
+        },
+        "theme": {
+          "style": "elegant-luxury",
+          "primaryColor": "#1e1b4b",
+          "accentColor": "#d97706",
+          "fontFamily": "Outfit, Plus Jakarta Sans, sans-serif",
+          "borderRadius": "rounded-2xl"
+        }
+      },
+      "isPublished": false,
+      "publishedAt": "2026-09-09T14:28:18.900Z",
+      "createdAt": "2026-09-06T14:28:18.901Z",
+      "updatedAt": "2026-09-10T14:02:16.718Z",
+      "viewsCount": 342,
+      "whatsappClicksCount": 89,
+      "callClicksCount": 24,
+      "leadsCount": 16
+    }
+  },
+  "inquiries": [
+    {
+      "id": "inq_ecdc1515890a",
+      "projectId": "platform_contact_hq",
+      "name": "Test User",
+      "phone": "Test Shop",
+      "email": "test@example.com",
+      "serviceRequested": "General Questions",
+      "message": "Testing contact form integration",
+      "createdAt": "2026-09-10T14:13:46.458Z"
+    },
+    {
+      "id": "inq_1",
+      "projectId": "proj_bella_salon",
+      "name": "Neha Kapoor",
+      "phone": "+91 98111 22334",
+      "email": "neha@example.com",
+      "serviceRequested": "24K Gold Radiance Facial",
+      "message": "Looking for Saturday 4 PM slot for 2 people.",
+      "createdAt": "2026-09-09T09:28:18.901Z"
+    }
+  ],
+  "payments": {
+    "order_TZyl3B5DMDiIJs": {
+      "id": "pay_rec_e35035fbb207",
+      "orderId": "order_TZyl3B5DMDiIJs",
+      "userId": "user_demo_123",
+      "userEmail": "demo@localai.web",
+      "amount": 49900,
+      "currency": "INR",
+      "plan": "pro",
+      "status": "created",
+      "createdAt": "2026-09-09T14:56:23.017Z",
+      "receipt": "rec_user_demo_123_1788965782455"
+    },
+    "order_TZylHZ0O77lMLS": {
+      "id": "pay_rec_2c5c28b1af56",
+      "orderId": "order_TZylHZ0O77lMLS",
+      "userId": "user_demo_123",
+      "userEmail": "demo@localai.web",
+      "amount": 49900,
+      "currency": "INR",
+      "plan": "pro",
+      "status": "created",
+      "createdAt": "2026-09-09T14:56:36.181Z",
+      "receipt": "rec_user_demo_123_1788965795716"
+    }
+  },
+  "multiOutletRequests": {
+    "mor_43c3a185410d1387": {
+      "id": "mor_43c3a185410d1387",
+      "userId": "user_demo_123",
+      "userEmail": "demo@localai.web",
+      "businessName": "Bella Luxe Salon",
+      "contactPerson": "Shubham Sharma",
+      "email": "demo@localai.web",
+      "phone": "8084449832",
+      "locationsCount": 2,
+      "requirements": "",
+      "status": "pending",
+      "createdAt": "2026-09-10T14:00:12.160Z",
+      "updatedAt": "2026-09-10T14:00:12.160Z"
+    }
+  }
+}
