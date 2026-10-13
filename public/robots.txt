@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://localweb.ai.studio/sitemap.xml
+Sitemap: https://localwebai.website/sitemap.xml
