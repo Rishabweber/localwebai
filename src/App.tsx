@@ -13,6 +13,11 @@ import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 import { TermsPage } from './components/TermsPage';
 import { RefundPolicyPage } from './components/RefundPolicyPage';
 import { ContactPage } from './components/ContactPage';
+import { AboutPage } from './components/AboutPage';
+import { ServicesPage } from './components/ServicesPage';
+import { PricingPage } from './components/PricingPage';
+import { PortfolioPage } from './components/PortfolioPage';
+import { ResourcesPage, RESOURCE_ARTICLES } from './components/ResourcesPage';
 import { getMe, clearStoredToken, getPublicSite, saveProject, updateProject, loginGuest } from './lib/api';
 import { User, Project, BusinessInfo, WebsiteContent } from './types';
 import { CategoryPreset, CATEGORY_PRESETS } from './lib/presets';
@@ -28,10 +33,16 @@ type ViewMode =
   | 'privacy-policy'
   | 'terms'
   | 'refund-policy'
-  | 'contact';
+  | 'contact'
+  | 'about'
+  | 'services'
+  | 'pricing'
+  | 'portfolio'
+  | 'resources';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewMode>('landing');
+  const [currentArticleSlug, setCurrentArticleSlug] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isAuthChecking, setIsAuthChecking] = useState(true);
 
@@ -54,6 +65,25 @@ export default function App() {
       return;
     }
     setUpgradeFeatureKey(feature);
+    setUpgradeModalOpen(true);
+  }
+
+  function handleSelectPlan(plan: 'starter' | 'pro' | 'multi') {
+    if (plan === 'starter') {
+      handleStartWizard();
+      return;
+    }
+    if (!user) {
+      setAuthModalOpen(true);
+      return;
+    }
+    if (plan === 'multi') {
+      setUpgradeFeatureKey('multi_outlet');
+      setUpgradeModalOpen(true);
+      return;
+    }
+    // 'pro' plan upgrade
+    setUpgradeFeatureKey('general');
     setUpgradeModalOpen(true);
   }
 
@@ -83,35 +113,79 @@ export default function App() {
         title: 'LocalAI Web — AI Website Builder for Local Businesses & Shops',
         description:
           'Create a fast, mobile-friendly website for your local business in minutes. LocalAI Web generates tailored copy, menus, WhatsApp bookings, and Google Maps directions.',
-        canonical: 'https://localweb.ai.studio/',
+        canonical: 'https://localwebai.website/',
       });
+    } else if (currentView === 'about') {
+      updatePageSeo({
+        title: 'About LocalWeb AI — Mission, Platform & Engineering for Local Businesses',
+        description:
+          'Discover LocalWeb AI: an intelligent website builder built specifically for neighborhood shops, beauty parlors, clinics, and local services in India and worldwide.',
+        canonical: 'https://localwebai.website/about',
+      });
+    } else if (currentView === 'services') {
+      updatePageSeo({
+        title: 'LocalWeb AI Services — Website Solutions for Local Businesses',
+        description:
+          'Explore website services tailored for local shops: AI generation, 1-tap WhatsApp booking, local SEO, Google Maps directions, printable QR codes, and lead management.',
+        canonical: 'https://localwebai.website/services',
+      });
+    } else if (currentView === 'pricing') {
+      updatePageSeo({
+        title: 'LocalWeb AI Pricing — Transparent Plans for Local Businesses',
+        description:
+          'Compare LocalWeb AI plans: Starter Free Forever (₹0), Business Pro (₹499/mo), and Multi-Outlet custom rollout. No hidden fees or surprise renewal costs.',
+        canonical: 'https://localwebai.website/pricing',
+      });
+    } else if (currentView === 'portfolio') {
+      updatePageSeo({
+        title: 'LocalWeb AI Showcase & Demo Projects — Real Website Previews',
+        description:
+          'Explore live and interactive demo websites created with LocalWeb AI: salons, bistros, clinics, and fitness studios with 1-tap WhatsApp booking.',
+        canonical: 'https://localwebai.website/portfolio',
+      });
+    } else if (currentView === 'resources') {
+      if (currentArticleSlug && RESOURCE_ARTICLES[currentArticleSlug]) {
+        const art = RESOURCE_ARTICLES[currentArticleSlug];
+        updatePageSeo({
+          title: `${art.title} | LocalWeb AI Resources`,
+          description: art.summary,
+          canonical: `https://localwebai.website/resources/${art.slug}`,
+        });
+      } else {
+        updatePageSeo({
+          title: 'LocalWeb AI Knowledge & Resources — Guides for Local Businesses',
+          description:
+            'Expert, fact-checked guides on small business website costs in India, local SEO, salon and restaurant website essentials, and digital strategies.',
+          canonical: 'https://localwebai.website/resources',
+        });
+      }
     } else if (currentView === 'wizard') {
       updatePageSeo({
         title: 'Create Your Business Website | LocalAI Web',
         description:
           'Step-by-step AI wizard to generate your local business website with custom branding, services, and WhatsApp contact in 2 minutes.',
-        canonical: 'https://localweb.ai.studio/',
+        canonical: 'https://localwebai.website/',
       });
     } else if (currentView === 'preview') {
       const name = activeBusinessInfo?.businessName || 'Local Business';
       updatePageSeo({
         title: `Preview: ${name} Website | LocalAI Web`,
         description: `Live responsive mobile and desktop preview for ${name}. Review services, WhatsApp booking button, and business hours.`,
-        canonical: 'https://localweb.ai.studio/',
+        canonical: 'https://localwebai.website/',
       });
     } else if (currentView === 'editor') {
       const name = activeBusinessInfo?.businessName || 'Local Business';
       updatePageSeo({
         title: `Edit ${name} Website Content | LocalAI Web`,
         description: `Fine-tune your website headlines, services catalog, pricing, contact details, and visual styling.`,
-        canonical: 'https://localweb.ai.studio/',
+        canonical: 'https://localwebai.website/',
       });
     } else if (currentView === 'dashboard') {
       updatePageSeo({
         title: 'My Websites & Business Dashboard | LocalAI Web',
         description:
           'Manage your published local business websites, view customer inquiries, and download counter QR codes.',
-        canonical: 'https://localweb.ai.studio/',
+        canonical: 'https://localwebai.website/',
       });
     } else if (currentView === 'public_site' && publicSiteData) {
       const { businessInfo, slug } = publicSiteData;
@@ -123,19 +197,53 @@ export default function App() {
         description:
           businessInfo.shortDescription ||
           `Official website for ${businessInfo.businessName} in ${businessInfo.city}. Book on WhatsApp, view services, pricing, hours, and directions.`,
-        canonical: `https://localweb.ai.studio/site/${slug}`,
+        canonical: `https://localwebai.website/site/${slug}`,
       });
     }
-  }, [currentView, activeBusinessInfo, publicSiteData]);
+  }, [currentView, currentArticleSlug, activeBusinessInfo, publicSiteData]);
 
   function checkCurrentRoute() {
     const path = window.location.pathname;
-    const match = path.match(/^\/site\/([a-zA-Z0-9_-]+)/);
-    if (match && match[1]) {
-      const slug = match[1];
+
+    const matchSite = path.match(/^\/site\/([a-zA-Z0-9_-]+)/);
+    if (matchSite && matchSite[1]) {
+      const slug = matchSite[1];
       setPublicSiteSlug(slug);
       setCurrentView('public_site');
       loadPublicSite(slug);
+      return;
+    }
+
+    const matchResource = path.match(/^\/resources\/([a-zA-Z0-9_-]+)/);
+    if (matchResource && matchResource[1]) {
+      setCurrentArticleSlug(matchResource[1]);
+      setCurrentView('resources');
+      return;
+    }
+
+    if (path === '/resources') {
+      setCurrentArticleSlug(null);
+      setCurrentView('resources');
+      return;
+    }
+
+    if (path === '/about') {
+      setCurrentView('about');
+      return;
+    }
+
+    if (path === '/services') {
+      setCurrentView('services');
+      return;
+    }
+
+    if (path === '/pricing') {
+      setCurrentView('pricing');
+      return;
+    }
+
+    if (path === '/portfolio' || path === '/showcase') {
+      setCurrentView('portfolio');
       return;
     }
 
@@ -143,16 +251,24 @@ export default function App() {
       setCurrentView('privacy-policy');
       return;
     }
+
     if (path === '/terms') {
       setCurrentView('terms');
       return;
     }
+
     if (path === '/refund-policy') {
       setCurrentView('refund-policy');
       return;
     }
+
     if (path === '/contact') {
       setCurrentView('contact');
+      return;
+    }
+
+    if (path === '/') {
+      setCurrentView('landing');
       return;
     }
   }
@@ -174,19 +290,7 @@ export default function App() {
     }
 
     window.history.pushState({}, '', path);
-    if (path === '/privacy-policy') {
-      setCurrentView('privacy-policy');
-    } else if (path === '/terms') {
-      setCurrentView('terms');
-    } else if (path === '/refund-policy') {
-      setCurrentView('refund-policy');
-    } else if (path === '/contact') {
-      setCurrentView('contact');
-    } else if (path === '/') {
-      setCurrentView('landing');
-    } else {
-      checkCurrentRoute();
-    }
+    checkCurrentRoute();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -248,190 +352,45 @@ export default function App() {
         website: updatedWebsite,
         businessInfo: updatedInfo,
       });
-      setActiveProject(updated);
-    } else if (user && !activeProject) {
-      const created = await saveProject(updatedInfo, updatedWebsite);
-      setActiveProject(created);
+      if (updated) {
+        setActiveProject(updated);
+      }
     }
   }
 
-  async function handlePublish() {
+  function handlePublish() {
     if (!user) {
-      // Auto-authenticate as guest or open auth modal so user gets a real persistent link
-      try {
-        const guestUser = await loginGuest();
-        setUser(guestUser);
-        if (activeBusinessInfo && activeWebsite) {
-          const proj = await saveProject(activeBusinessInfo, activeWebsite);
-          const published = await updateProject(proj.id, { isPublished: true });
-          setActiveProject(published);
-          setPublishModalOpen(true);
-          return;
-        }
-      } catch {
-        setAuthModalOpen(true);
-        return;
-      }
+      setAuthModalOpen(true);
+      return;
     }
+    setPublishModalOpen(true);
+  }
 
-    if (activeProject) {
-      const updated = await updateProject(activeProject.id, { isPublished: true });
-      setActiveProject(updated);
-      setPublishModalOpen(true);
-    } else if (activeBusinessInfo && activeWebsite) {
-      const created = await saveProject(activeBusinessInfo, activeWebsite);
-      const published = await updateProject(created.id, { isPublished: true });
-      setActiveProject(published);
-      setPublishModalOpen(true);
-    }
+  function handleExploreDemo() {
+    // Navigate to showcase portfolio view
+    navigateToPath('/portfolio');
   }
 
   function handleViewLiveSite(slug: string) {
-    window.history.pushState({}, '', `/site/${slug}`);
-    setPublicSiteSlug(slug);
-    setCurrentView('public_site');
-    loadPublicSite(slug);
+    window.open(`/site/${slug}`, '_blank');
   }
 
-  // Load a demo site for quick showcase exploration
-  function handleExploreDemo() {
-    const demoPreset = CATEGORY_PRESETS[0];
-    const dummyInfo: BusinessInfo = {
-      businessName: demoPreset.defaultInfo.businessName || 'Bella Luxe Hair & Spa',
-      category: 'salon',
-      city: demoPreset.defaultInfo.city || 'Bandra West, Mumbai',
-      address: demoPreset.defaultInfo.address || 'Shop 4, Hill Road, Bandra West, Mumbai',
-      shortDescription:
-        demoPreset.defaultInfo.shortDescription || 'Boutique hair styling, organic skin therapies, and bridal beauty.',
-      services: demoPreset.defaultInfo.services || [],
-      phoneNumber: demoPreset.defaultInfo.phoneNumber || '+91 98200 12345',
-      whatsappNumber: demoPreset.defaultInfo.whatsappNumber || '+91 98200 12345',
-      openingHours: {
-        general: 'Mon - Sat: 10:00 AM - 9:00 PM (Sun: 11 AM - 7 PM)',
-        schedule: [
-          { day: 'Monday - Saturday', hours: '10:00 AM - 9:00 PM', isOpen: true },
-          { day: 'Sunday', hours: '11:00 AM - 7:00 PM', isOpen: true },
-        ],
-      },
-      businessEmail: demoPreset.defaultInfo.businessEmail || 'hello@bellaluxe.com',
-      stylePreference: 'elegant-luxury',
-      currencySymbol: '₹',
-    };
-
-    const dummyWebsite: WebsiteContent = {
-      hero: {
-        badge: 'Top-Rated Luxury Salon in Mumbai',
-        headline: 'Where Glamour Meets Relaxation in Bandra',
-        subheadline:
-          'Expert hair stylists, organic skin therapies, and bespoke bridal beauty right on Hill Road. Walk-ins welcomed.',
-        primaryCta: 'Chat on WhatsApp',
-        secondaryCta: 'View Menu & Prices',
-        coverImage:
-          'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=80',
-      },
-      about: {
-        title: 'Our Craft & Neighborhood Heritage',
-        subtitle: 'Boutique Beauty Care Since 2018',
-        story:
-          'Founded in the bustling heart of Bandra West, Bella Luxe Salon has served over 8,000 neighborhood clients. We believe personal care should be relaxing, transparent, and completely customized.',
-        image:
-          'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
-        highlights: [
-          { title: 'Certified Master Stylists', desc: 'Trained at Vidal Sassoon & L’Oreal Academies' },
-          { title: '100% Organic Products', desc: 'Cruelty-free botanical colors & treatments' },
-          { title: 'Zero Wait Policy', desc: 'Dedicated booked slots with prompt reception' },
-        ],
-        yearsInBusiness: '6+ Years in Bandra',
-      },
-      services: dummyInfo.services || [],
-      contact: {
-        phone: dummyInfo.phoneNumber || '+91 98200 12345',
-        whatsapp: dummyInfo.whatsappNumber || '+91 98200 12345',
-        email: dummyInfo.businessEmail || 'hello@bellaluxe.com',
-        address: dummyInfo.address || 'Shop 4, Hill Road, Bandra West, Mumbai 400050',
-        city: dummyInfo.city,
-        googleMapsQuery: 'Bella Luxe Hair and Spa Bandra West Mumbai',
-        whatsappMessagePreset:
-          'Hi Bella Luxe, I would like to schedule an appointment. What slots are available?',
-      },
-      schedule: [
-        { day: 'Monday - Saturday', hours: '10:00 AM - 9:00 PM', isOpen: true },
-        { day: 'Sunday', hours: '11:00 AM - 7:00 PM', isOpen: true },
-      ],
-      testimonials: [
-        {
-          id: '1',
-          name: 'Pooja Hegde',
-          role: 'Regular Client',
-          comment: 'The balayage coloring was sensational! Best salon experience in Bandra by far.',
-          rating: 5,
-        },
-        {
-          id: '2',
-          name: 'Rohan Mehta',
-          role: 'Bandra Resident',
-          comment: 'Quick WhatsApp booking and zero wait. Clean, professional and great staff.',
-          rating: 5,
-        },
-        {
-          id: '3',
-          name: 'Ananya Sen',
-          role: 'Bridal Client',
-          comment: 'Booked my wedding makeup package with them. Absolutely flawless finish!',
-          rating: 5,
-        },
-      ],
-      faq: [
-        {
-          id: '1',
-          question: 'Do I need an appointment beforehand?',
-          answer: 'Appointments are recommended to avoid waiting, though walk-ins are always welcome.',
-        },
-        {
-          id: '2',
-          question: 'Is valet parking available?',
-          answer: 'Yes, complimentary valet parking is available on Hill Road right outside the salon.',
-        },
-      ],
-      seo: {
-        metaTitle: 'Bella Luxe Hair & Spa | Best Salon in Bandra West, Mumbai',
-        metaDescription:
-          'Experience luxury hair treatments, facials, and bridal makeovers in Bandra West. Book directly on WhatsApp.',
-        keywords: ['salon in bandra', 'hair spa mumbai', 'best beauty parlour mumbai'],
-        title: 'Bella Luxe Hair & Spa | Best Salon in Bandra West, Mumbai',
-        description:
-          'Experience luxury hair treatments, facials, and bridal makeovers in Bandra West. Book directly on WhatsApp.',
-      },
-      theme: {
-        style: 'elegant-luxury',
-        primaryColor: '#312e81',
-        accentColor: '#fbbf24',
-        fontFamily: 'Outfit',
-        borderRadius: 'rounded-2xl',
-      },
-    };
-
-    setActiveBusinessInfo(dummyInfo);
-    setActiveWebsite(dummyWebsite);
-    setCurrentView('preview');
-  }
-
-  // Standalone Public Site View (Direct URL Route)
+  // Handle standalone public website view
   if (currentView === 'public_site') {
     if (publicSiteError) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4 text-center">
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 max-w-md shadow-sm space-y-4">
-            <h2 className="font-heading text-xl font-bold text-slate-900">Website Unavailable</h2>
-            <p className="text-xs text-slate-500">{publicSiteError}</p>
+        <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 p-4 text-center">
+          <div className="max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-bold text-slate-800">Website Not Found</h2>
+            <p className="mt-2 text-sm text-slate-600">{publicSiteError}</p>
             <button
               onClick={() => {
                 window.history.pushState({}, '', '/');
                 setCurrentView('landing');
               }}
-              className="rounded-xl bg-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm"
+              className="mt-6 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 cursor-pointer"
             >
-              Go to LocalAI Web Homepage
+              Go to LocalWeb AI Home
             </button>
           </div>
         </div>
@@ -440,9 +399,11 @@ export default function App() {
 
     if (!publicSiteData) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-          <div className="h-8 w-8 animate-spin rounded-full border-3 border-indigo-600 border-t-transparent" />
-          <p className="mt-3 text-xs text-slate-500">Loading website...</p>
+        <div className="flex min-h-screen items-center justify-center bg-slate-50">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent" />
+            <p className="text-sm font-medium text-slate-600">Loading website...</p>
+          </div>
         </div>
       );
     }
@@ -453,19 +414,22 @@ export default function App() {
         website={publicSiteData.website}
         isStandalone={true}
         slug={publicSiteData.slug}
-        removeBranding={(publicSiteData as any).removeBranding ?? false}
+        removeBranding={publicSiteData.website.removeBranding || false}
       />
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
-      {/* Navigation Header */}
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+      {/* Site-wide Sticky Navigation */}
       <Navbar
         user={user}
         onOpenAuth={() => setAuthModalOpen(true)}
         onLogout={handleLogout}
         onNavigate={(view) => {
+          if (view === 'landing') {
+            window.history.pushState({}, '', '/');
+          }
           setCurrentView(view);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
@@ -480,14 +444,50 @@ export default function App() {
             onStartWizard={handleStartWizard}
             onExploreDemo={handleExploreDemo}
             onNavigatePath={navigateToPath}
-            onSelectPlan={(plan) => {
-              if (user) {
-                setUpgradeFeatureKey('general');
-                setUpgradeModalOpen(true);
-              } else {
-                setAuthModalOpen(true);
-              }
-            }}
+            onSelectPlan={handleSelectPlan}
+          />
+        )}
+
+        {currentView === 'about' && (
+          <AboutPage
+            onNavigateHome={() => navigateToPath('/')}
+            onNavigatePath={navigateToPath}
+            onStartWizard={handleStartWizard}
+          />
+        )}
+
+        {currentView === 'services' && (
+          <ServicesPage
+            onNavigateHome={() => navigateToPath('/')}
+            onNavigatePath={navigateToPath}
+            onStartWizard={handleStartWizard}
+          />
+        )}
+
+        {currentView === 'pricing' && (
+          <PricingPage
+            onNavigateHome={() => navigateToPath('/')}
+            onNavigatePath={navigateToPath}
+            onStartWizard={handleStartWizard}
+            onSelectPlan={handleSelectPlan}
+          />
+        )}
+
+        {currentView === 'portfolio' && (
+          <PortfolioPage
+            onNavigateHome={() => navigateToPath('/')}
+            onNavigatePath={navigateToPath}
+            onStartWizard={handleStartWizard}
+            onExploreDemo={handleExploreDemo}
+          />
+        )}
+
+        {currentView === 'resources' && (
+          <ResourcesPage
+            currentArticleSlug={currentArticleSlug}
+            onNavigateHome={() => navigateToPath('/')}
+            onNavigatePath={navigateToPath}
+            onStartWizard={handleStartWizard}
           />
         )}
 
@@ -581,6 +581,8 @@ export default function App() {
             }}
             onPublishProject={(proj) => {
               setActiveProject(proj);
+              setActiveBusinessInfo(proj.businessInfo);
+              setActiveWebsite(proj.website);
               setPublishModalOpen(true);
             }}
             onUpgradeRequest={handleUpgradeRequest}
